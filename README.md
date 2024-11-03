@@ -85,18 +85,17 @@ Control de Alquileres y Ventas: Registro y gestión de transacciones de alquiler
 Ejemplo de solicitud:
     POST /api/users/register
 
-    ```bash
+    ```json
     {
         "name": "María Gómez",
         "email": "maria.gomez@example.com",
         "password": "password123",
         "role": "cliente"
     }
-    ```
 
 Respuesta exitosa:
 
-    ```bash
+    ```json
     {
         "message": "Usuario registrado exitosamente",
         "user": {
@@ -112,7 +111,7 @@ Respuesta exitosa:
 Ejemplo de solicitud:
     POST /api/users/login
 
-    ```bash
+    ```json
     {
         "email": "maria.gomez@example.com",
         "password": "password123"
@@ -120,7 +119,7 @@ Ejemplo de solicitud:
     ```
 Respuesta exitosa:
 
-    ```bash
+    ```json
     {
         "message": "Inicio de sesión exitoso",
         "token": "jwt_token_aqui",
@@ -140,7 +139,7 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```bash
+    ```json
     {
         "id": 1,
         "name": "María Gómez",
@@ -157,7 +156,7 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```bash
+    ```json
     [
         {
             "id": 1,
@@ -178,7 +177,7 @@ Ejemplo de solicitud:
     Header: Authorization: Bearer jwt_token_aqui
     POST /api/properties
 
-    ```bash
+    ```json
     {
         "address": "Avenida Siempreviva 742",
         "type": "Departamento",
@@ -192,7 +191,7 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```bash
+    ```json
     {
         "message": "Propiedad registrada exitosamente",
         "property": {
@@ -213,7 +212,7 @@ Ejemplo de solicitud:
     Header: Authorization: Bearer jwt_token_aqui
     PUT /api/properties/1
 
-    ```bash
+    ```json
     {
         "price": 230000,
         "status": "reservada"
@@ -222,7 +221,7 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```bash
+    ```json
     {
         "message": "Propiedad actualizada exitosamente",
         "property": {
@@ -245,7 +244,7 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```bash
+    ```json
     {
         "message": "Propiedad eliminada exitosamente"
     }
@@ -259,7 +258,7 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```bash
+    ```json
     [
         {
             "id": 1,
@@ -277,7 +276,7 @@ Ejemplo de solicitud:
     Header: Authorization: Bearer jwt_token_aqui
     POST /api/clients
 
-    ```bash
+    ```json
     {
         "name": "Carlos García",
         "documentId": "DNI 12345678",
@@ -288,7 +287,7 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```bash
+    ```json
     {
         "message": "Cliente registrado exitosamente",
         "client": {
@@ -308,7 +307,7 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```bash
+    ```json
     [
         {
             "id": 1,
@@ -327,7 +326,7 @@ Ejemplo de solicitud:
     Header: Authorization: Bearer jwt_token_aqui
     POST /api/rentals
 
-    ```bash
+    ```json
     {
         "rentalDate": "2024-12-01",
         "returnDate": "2025-01-01",
@@ -339,7 +338,7 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```bash
+    ```json
     {
         "message": "Alquiler registrado exitosamente",
         "rental": {
@@ -360,7 +359,7 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```bash
+    ```json
     [
         {
             "id": 1,
@@ -378,7 +377,7 @@ Ejemplo de solicitud:
     Header: Authorization: Bearer jwt_token_aqui
     POST /api/sales
 
-    ```bash
+    ```json
     {
         "propertyId": 1,
         "clientId": 2,
@@ -389,7 +388,7 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```bash
+    ```json
     {
         "message": "Venta registrada exitosamente",
         "sale": {
@@ -406,7 +405,7 @@ Respuesta exitosa:
 
 # Crea un archivo .env en la raíz del proyecto y agrega las siguientes variables:
 
-    ```bash
+    ```env
     # Configuración de la base de datos
     DB_HOST=localhost
     DB_USER=root
