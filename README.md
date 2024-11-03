@@ -92,6 +92,7 @@ Ejemplo de solicitud:
         "password": "password123",
         "role": "cliente"
     }
+    ```
 
 Respuesta exitosa:
 
@@ -117,6 +118,7 @@ Ejemplo de solicitud:
         "password": "password123"
     }
     ```
+    
 Respuesta exitosa:
 
     ```json
