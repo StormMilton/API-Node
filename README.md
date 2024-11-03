@@ -188,8 +188,7 @@ Ejemplo de solicitud:
         "description": "Departamento moderno",
         "size": 80,
         "agentId": 2
-    }
-    ```
+    }```
 
 Respuesta exitosa:
 
