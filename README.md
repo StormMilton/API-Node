@@ -141,14 +141,14 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```json
-    {
-        "id": 1,
-        "name": "María Gómez",
-        "email": "maria.gomez@example.com",
-        "role": "cliente"
-    }
-    ```
+```json
+{
+    "id": 1,
+    "name": "María Gómez",
+    "email": "maria.gomez@example.com",
+    "role": "cliente"
+}
+```
 
 ## Gestión de Propiedades
 
@@ -158,21 +158,21 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```json
-    [
-        {
-            "id": 1,
-            "address": "Calle Falsa 123",
-            "type": "Casa",
-            "price": 250000,
-            "status": "disponible",
-            "description": "Hermosa casa en el centro",
-            "size": 120,
-            "agentId": 2
-        },
-        ...
-    ]
-    ```
+```json
+[
+    {
+        "id": 1,
+        "address": "Calle Falsa 123",
+        "type": "Casa",
+        "price": 250000,
+        "status": "disponible",
+        "description": "Hermosa casa en el centro",
+        "size": 120,
+        "agentId": 2
+    },
+    ...
+]
+```
 
 # POST /api/properties - Registrar una nueva propiedad
 Ejemplo de solicitud:
