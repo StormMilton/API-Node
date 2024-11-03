@@ -85,54 +85,54 @@ Control de Alquileres y Ventas: Registro y gestión de transacciones de alquiler
 Ejemplo de solicitud:
     POST /api/users/register
 
-    ```json
-    {
-        "name": "María Gómez",
-        "email": "maria.gomez@example.com",
-        "password": "password123",
-        "role": "cliente"
-    }
-    ```
+```json
+{
+    "name": "María Gómez",
+    "email": "maria.gomez@example.com",
+    "password": "password123",
+    "role": "cliente"
+}
+```
 
 Respuesta exitosa:
 
-    ```json
-    {
-        "message": "Usuario registrado exitosamente",
-        "user": {
-            "id": 1,
-            "name": "María Gómez",
-            "email": "maria.gomez@example.com",
-            "role": "cliente"
-        }
+```json
+{
+    "message": "Usuario registrado exitosamente",
+    "user": {
+        "id": 1,
+        "name": "María Gómez",
+        "email": "maria.gomez@example.com",
+        "role": "cliente"
     }
-    ```
+}
+```
 
 # POST /api/users/login - Inicio de sesión de usuarios
 Ejemplo de solicitud:
     POST /api/users/login
 
-    ```json
-    {
-        "email": "maria.gomez@example.com",
-        "password": "password123"
-    }
-    ```
+```json
+{
+    "email": "maria.gomez@example.com",
+    "password": "password123"
+}
+```
     
 Respuesta exitosa:
 
-    ```json
-    {
-        "message": "Inicio de sesión exitoso",
-        "token": "jwt_token_aqui",
-        "user": {
-            "id": 1,
-            "name": "María Gómez",
-            "email": "maria.gomez@example.com",
-            "role": "cliente"
-        }
+```json
+{
+    "message": "Inicio de sesión exitoso",
+    "token": "jwt_token_aqui",
+    "user": {
+        "id": 1,
+        "name": "María Gómez",
+        "email": "maria.gomez@example.com",
+        "role": "cliente"
     }
-    ```
+}
+```
 
 # GET /api/users/profile - Obtención del perfil del usuario autenticado
 Ejemplo de solicitud:
@@ -171,7 +171,7 @@ Respuesta exitosa:
         "agentId": 2
     }
 ]
-
+```
 
 # POST /api/properties - Registrar una nueva propiedad
 Ejemplo de solicitud:
@@ -191,51 +191,51 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```json
-    {
-        "message": "Propiedad registrada exitosamente",
-        "property": {
-            "id": 2,
-            "address": "Avenida Siempreviva 742",
-            "type": "Departamento",
-            "price": 150000,
-            "status": "disponible",
-            "description": "Departamento moderno",
-            "size": 80,
-            "agentId": 2
-        }
+```json
+{
+    "message": "Propiedad registrada exitosamente",
+    "property": {
+        "id": 2,
+        "address": "Avenida Siempreviva 742",
+        "type": "Departamento",
+        "price": 150000,
+        "status": "disponible",
+        "description": "Departamento moderno",
+        "size": 80,
+        "agentId": 2
     }
-    ```
+}
+```
 
 # PUT /api/properties/ - Actualizar la información de una propiedad
 Ejemplo de solicitud:
     Header: Authorization: Bearer jwt_token_aqui
     PUT /api/properties/1
 
-    ```json
-    {
-        "price": 230000,
-        "status": "reservada"
-    }
-    ```
+```json
+{
+    "price": 230000,
+    "status": "reservada"
+}
+```
 
 Respuesta exitosa:
 
-    ```json
-    {
-        "message": "Propiedad actualizada exitosamente",
-        "property": {
-            "id": 1,
-            "address": "Calle Falsa 123",
-            "type": "Casa",
-            "price": 230000,
-            "status": "reservada",
-            "description": "Hermosa casa en el centro",
-            "size": 120,
-            "agentId": 2
-        }
+```json
+{
+    "message": "Propiedad actualizada exitosamente",
+    "property": {
+        "id": 1,
+        "address": "Calle Falsa 123",
+        "type": "Casa",
+        "price": 230000,
+        "status": "reservada",
+        "description": "Hermosa casa en el centro",
+        "size": 120,
+        "agentId": 2
     }
-    ```
+}
+```
 
 # DELETE /api/properties/ - Eliminar una propiedad
 Ejemplo de solicitud:
@@ -244,11 +244,11 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```json
-    {
-        "message": "Propiedad eliminada exitosamente"
-    }
-    ```
+```json
+{
+    "message": "Propiedad eliminada exitosamente"
+}
+```
 
 ## Gestión de Clientes
 # GET /api/clients - Obtener la lista de todos los clientes
@@ -258,47 +258,47 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```json
-    [
-        {
-            "id": 1,
-            "name": "Carlos García",
-            "documentId": "DNI 12345678",
-            "phone": "123456789",
-            "userId": 1
-        },
-        ...
-    ]
-    ```
+```json
+[
+    {
+        "id": 1,
+        "name": "Carlos García",
+        "documentId": "DNI 12345678",
+        "phone": "123456789",
+        "userId": 1
+    },
+    ...
+]
+```
 
 # POST /api/clients - Registrar un nuevo cliente
 Ejemplo de solicitud:
     Header: Authorization: Bearer jwt_token_aqui
     POST /api/clients
 
-    ```json
-    {
+```json
+{
+    "name": "Carlos García",
+    "documentId": "DNI 12345678",
+    "phone": "123456789",
+    "userId": 1
+}
+```
+
+Respuesta exitosa:
+
+```json
+{
+    "message": "Cliente registrado exitosamente",
+    "client": {
+        "id": 2,
         "name": "Carlos García",
         "documentId": "DNI 12345678",
         "phone": "123456789",
         "userId": 1
     }
-    ```
-
-Respuesta exitosa:
-
-    ```json
-    {
-        "message": "Cliente registrado exitosamente",
-        "client": {
-            "id": 2,
-            "name": "Carlos García",
-            "documentId": "DNI 12345678",
-            "phone": "123456789",
-            "userId": 1
-        }
-    }
-    ```
+}
+```
 
 ## Control de Alquileres
 # GET /api/rentals - Obtener todos los alquileres
@@ -307,50 +307,50 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```json
-    [
-        {
-            "id": 1,
-            "rentalDate": "2024-12-01",
-            "returnDate": "2025-01-01",
-            "totalAmount": 1500,
-            "propertyId": 1,
-            "clientId": 1
-        },
-        ...
-    ]
-    ```
+```json
+[
+    {
+        "id": 1,
+        "rentalDate": "2024-12-01",
+        "returnDate": "2025-01-01",
+        "totalAmount": 1500,
+        "propertyId": 1,
+        "clientId": 1
+    },
+    ...
+]
+```
 
 # POST /api/rentals - Registrar un nuevo alquiler
 Ejemplo de solicitud:
     Header: Authorization: Bearer jwt_token_aqui
     POST /api/rentals
 
-    ```json
-    {
+```json
+{
+    "rentalDate": "2024-12-01",
+    "returnDate": "2025-01-01",
+    "totalAmount": 1500,
+    "propertyId": 1,
+    "clientId": 1
+}
+```
+
+Respuesta exitosa:
+
+```json
+{
+    "message": "Alquiler registrado exitosamente",
+    "rental": {
+        "id": 1,
         "rentalDate": "2024-12-01",
         "returnDate": "2025-01-01",
         "totalAmount": 1500,
         "propertyId": 1,
         "clientId": 1
     }
-    ```
-
-Respuesta exitosa:
-
-    ```json
-    {
-        "message": "Alquiler registrado exitosamente",
-        "rental": {
-            "id": 1,
-            "rentalDate": "2024-12-01",
-            "returnDate": "2025-01-01",
-            "totalAmount": 1500,
-            "propertyId": 1,
-            "clientId": 1
-        }
-    }
-    ```
+}
+```
 
 ## Control de Ventas
 # GET /api/sales - Obtener todas las ventas
@@ -359,65 +359,65 @@ Ejemplo de solicitud:
 
 Respuesta exitosa:
 
-    ```json
-    [
-        {
-            "id": 1,
-            "propertyId": 1,
-            "clientId": 2,
-            "salePrice": 150000,
-            "saleDate": "2024-12-01"
-        },
-        ...
-    ]
-    ```
+```json
+[
+    {
+        "id": 1,
+        "propertyId": 1,
+        "clientId": 2,
+        "salePrice": 150000,
+        "saleDate": "2024-12-01"
+    },
+    ...
+]
+```
 
 # POST /api/sales - Registrar una nueva venta
 Ejemplo de solicitud:
     Header: Authorization: Bearer jwt_token_aqui
     POST /api/sales
 
-    ```json
-    {
+```json
+{
+    "propertyId": 1,
+    "clientId": 2,
+    "salePrice": 150000,
+    "saleDate": "2024-12-01"
+}
+```
+
+Respuesta exitosa:
+
+```json
+{
+    "message": "Venta registrada exitosamente",
+    "sale": {
+        "id": 1,
         "propertyId": 1,
         "clientId": 2,
         "salePrice": 150000,
         "saleDate": "2024-12-01"
     }
-    ```
-
-Respuesta exitosa:
-
-    ```json
-    {
-        "message": "Venta registrada exitosamente",
-        "sale": {
-            "id": 1,
-            "propertyId": 1,
-            "clientId": 2,
-            "salePrice": 150000,
-            "saleDate": "2024-12-01"
-        }
-    }
-    ```
+}
+```
 
 ## Configuración de Variables de Entorno
 
 # Crea un archivo .env en la raíz del proyecto y agrega las siguientes variables:
 
-    ```env
-    # Configuración de la base de datos
-    DB_HOST=localhost
-    DB_USER=root
-    DB_PASS=root
-    DB_NAME=nombre_base_de_datos
+```env
+# Configuración de la base de datos
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=root
+DB_NAME=nombre_base_de_datos
 
-    # Configuración del puerto del servidor
-    PORT=3307
+# Configuración del puerto del servidor
+PORT=3307
 
-    # Clave secreta para JWT
-    JWT_SECRET=tu_clave_secreta    
-    ```
+# Clave secreta para JWT
+JWT_SECRET=tu_clave_secreta    
+```
 
 ## Configuración de Repositorios
 
