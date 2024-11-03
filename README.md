@@ -169,26 +169,25 @@ Respuesta exitosa:
         "description": "Hermosa casa en el centro",
         "size": 120,
         "agentId": 2
-    },
-    ...
+    }
 ]
-```
+
 
 # POST /api/properties - Registrar una nueva propiedad
 Ejemplo de solicitud:
     Header: Authorization: Bearer jwt_token_aqui
     POST /api/properties
 
-    ```json
-    {
-        "address": "Avenida Siempreviva 742",
-        "type": "Departamento",
-        "price": 150000,
-        "status": "disponible",
-        "description": "Departamento moderno",
-        "size": 80,
-        "agentId": 2
-    }```
+```json
+{
+    "address": "Avenida Siempreviva 742",
+    "type": "Departamento",
+    "price": 150000,
+    "status": "disponible",
+    "description": "Departamento moderno",
+    "size": 80,
+    "agentId": 2
+}```
 
 Respuesta exitosa:
 
