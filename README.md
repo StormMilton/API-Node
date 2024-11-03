@@ -1,92 +1,441 @@
-# Node.js + Sequelize - API-REST-EFI
+# Proyecto de Gestión de Propiedades
 
-Este proyecto es una API construida con Node.js, Express, Sequelize y MySQL.
+Este proyecto es una aplicación de gestión de propiedades que permite realizar operaciones de venta y alquiler de propiedades. El sistema cuenta con una API REST para el backend desarrollada en Node.js y un frontend en React para la interacción del usuario. La aplicación está diseñada para administradores, agentes y clientes, cada uno con diferentes permisos y funciones.
 
-## Requisitos previos
+## Tabla de Contenidos
 
-- Node.js instalado
-- MySQL en ejecución
-- Clonar este repositorio
+- [Instalación](#instalación)
+- [Características](#características)
+- [Rutas de la API](#rutas-de-la-api)
+- [Ejemplos de Uso](#ejemplos-de-uso)
+- [Configuración de Variables de Entorno](#configuración-de-variables-de-entorno)
+- [Configuración de Repositorios](#configuración-de-repositorios)
+- [Contribuciones](#contribuciones)
 
 ## Instalación
 
-1. Clona este repositorio y navega a la carpeta del proyecto:
+### Backend
 
-```bash
-git clone <URL-del-repositorio>
-cd API-REST-EFI
-```
+1. Clona este repositorio:
 
-### 2. Instala las dependencias
-npm install
+   ```bash
+   git clone https://github.com/tuusuario/nombre-del-repo-backend.git
+   cd nombre-del-repo-backend
 
-### 3. Crea un archivo .env en la raíz del proyecto con la configuración de la base de datos:
-```bash
-DB_USERNAME = root - usuario de mysql personal  
-DB_PASSWORD = root1234 - contraseña de mysql personal  
-DB_DATABASE = nombre_de_tu_db - nombre de base de datos de mysql personal   
-DB_HOST = 127.0.0.1    
-PORT = 4000   
-```
+2. Instala las dependencias:
 
-### 4. Crea la base de datos en MySQL:
-Ubicados dentro de la carpeta del proyecto ejecutamos node createDatabase.js
+    ```bash
+    npm install
 
-// Conexión sin especificar una base de datos concreta
-const sequelize = new Sequelize('', 'root', 'root1234', {
-    host: 'localhost',
-    dialect: 'mysql',
-});
+3. Crea la base de datos necesaria y configura las variables de entorno en un archivo .env siguiendo el ejemplo de Configuración de Variables de Entorno.
 
-En este fragmento de código debemos respetar nuestro usuario y contraseña de MySql
+4. Ejecuta las migraciones para crear las tablas necesarias en la base de datos:
 
-### 5. Ejecutar Migraciones  
-Ejecuta las migraciones para crear las tablas en la base de datos:  
-npx sequelize-cli db:migrate  
+    ```bash
+    npx sequelize-cli db:migrate
 
-### 6. Ejecutar seeders
-npx sequelize-cli db:seed:all
+5. Inicia el servidor: 
 
-### 7. Ejecutar el Servidor  
-Inicia el servidor con el siguiente comando:  
-npm start o npm run dev  
+    ```bash
+    npm start
 
+6. El servidor estará funcionando en http://localhost:3307.
 
+## Características
 
-## Comandos de Sequelize
-#### 1. Crear un nuevo modelo  
-Para crear un modelo y su migración correspondiente:  
-npx sequelize-cli model:generate --name <ModelName> --attributes field1:type,field2:type  
+Autenticación de Usuarios: Soporta autenticación con JWT para seguridad y control de acceso.
+Roles de Usuarios: Diferentes permisos para clientes, agentes y administradores.
+Gestión de Propiedades: Operaciones CRUD sobre propiedades, control de estado de propiedad (disponible, alquilada, vendida).
+Gestión de Clientes: CRUD para clientes asociados a las propiedades.
+Control de Alquileres y Ventas: Registro y gestión de transacciones de alquiler y venta, actualizando automáticamente el estado de la propiedad.
 
-##### Ejemplo:   
-npx sequelize-cli model:generate --name Product --attributes name:string,price:float
+## Rutas de la API
 
-#### 2. Ejecutar migraciones  
-npx sequelize-cli db:migrate
+# Autenticación de Usuarios
+- POST /api/users/register - Registro de nuevos usuarios.
+- POST /api/users/login - Inicio de sesión de usuarios.
+- GET /api/users/profile - Obtención del perfil del usuario autenticado.
 
-### 3. Deshacer la última migración  
-npx sequelize-cli db:migrate:undo
+# Gestión de Propiedades
+- GET /api/properties - Obtener todas las propiedades disponibles (clientes solo ven las disponibles).
+- POST /api/properties - Registrar una nueva propiedad (solo para admin y agentes).
+- PUT /api/properties/ - Actualizar la información de una propiedad (solo para admin y agentes).
+- DELETE /api/properties/ - Eliminar una propiedad (solo para admin).
 
-### 4. Crear un nuevo seeders
-npx sequelize-cli seed:generate --name create-user
+# Gestión de Clientes
+- GET /api/clients - Obtener la lista de todos los clientes (solo admin y agentes).
+- POST /api/clients - Registrar un nuevo cliente.
+- PUT /api/clients/ - Actualizar un cliente (solo admin y agentes).
+- DELETE /api/clients/ - Eliminar un cliente (solo admin).
 
-## Estructura del Proyecto
-├── src  
-│   ├── config  
-│   │   └── config.json            # Configuración de la base de datos para Sequelize  
-│   ├── controllers  
-│   │   └── userController.js      # Controlador para manejar los usuarios  
-│   ├── migrations  
-│   │   └── [timestamp]-create-user.js  # Migración para crear la tabla de usuarios  
-│   ├── models  
-│   │   ├── index.js               # Configuración de la conexión de Sequelize  
-│   │   └── user.js                # Definición del modelo User  
-│   ├── routes  
-│   │   └── userRoutes.js          # Rutas para la API de usuarios  
-├── .env                           # Variables de entorno (DB credentials, etc.)  
-├── createDatabase.js              # Crear database a traves de un archivo.js  
-├── package.json                   # Dependencias del proyecto y scripts  
-└── server.js                      # Configuración del servidor Express  
+# Control de Alquileres
+- GET /api/rentals - Obtener todos los alquileres.
+- POST /api/rentals - Registrar un nuevo alquiler (verifica disponibilidad de la propiedad).
+- DELETE /api/rentals/ - Eliminar un alquiler (solo admin).
 
+# Control de Ventas
+- GET /api/sales - Obtener todas las ventas.
+- POST /api/sales - Registrar una nueva venta (verifica disponibilidad de la propiedad).
+- DELETE /api/sales/ - Eliminar una venta (solo admin).
 
+## Ejemplos de Uso
 
+## Autenticación de Usuarios
+# POST /api/users/register - Registro de nuevos usuarios
+Ejemplo de solicitud:
+    POST /api/users/register
+
+    ```bash
+    {
+        "name": "María Gómez",
+        "email": "maria.gomez@example.com",
+        "password": "password123",
+        "role": "cliente"
+    }
+    ```
+
+Respuesta exitosa:
+
+    ```bash
+    {
+        "message": "Usuario registrado exitosamente",
+        "user": {
+            "id": 1,
+            "name": "María Gómez",
+            "email": "maria.gomez@example.com",
+            "role": "cliente"
+        }
+    }
+    ```
+
+# POST /api/users/login - Inicio de sesión de usuarios
+Ejemplo de solicitud:
+    POST /api/users/login
+
+    ```bash
+    {
+        "email": "maria.gomez@example.com",
+        "password": "password123"
+    }
+    ```
+Respuesta exitosa:
+
+    ```bash
+    {
+        "message": "Inicio de sesión exitoso",
+        "token": "jwt_token_aqui",
+        "user": {
+            "id": 1,
+            "name": "María Gómez",
+            "email": "maria.gomez@example.com",
+            "role": "cliente"
+        }
+    }
+    ```
+
+# GET /api/users/profile - Obtención del perfil del usuario autenticado
+Ejemplo de solicitud:
+    Header: Authorization: Bearer jwt_token_aqui
+    GET /api/users/profile
+
+Respuesta exitosa:
+
+    ```bash
+    {
+        "id": 1,
+        "name": "María Gómez",
+        "email": "maria.gomez@example.com",
+        "role": "cliente"
+    }
+    ```
+
+## Gestión de Propiedades
+
+# GET /api/properties - Obtener todas las propiedades disponibles
+Ejemplo de solicitud:
+    GET /api/properties
+
+Respuesta exitosa:
+
+    ```bash
+    [
+        {
+            "id": 1,
+            "address": "Calle Falsa 123",
+            "type": "Casa",
+            "price": 250000,
+            "status": "disponible",
+            "description": "Hermosa casa en el centro",
+            "size": 120,
+            "agentId": 2
+        },
+        ...
+    ]
+    ```
+
+# POST /api/properties - Registrar una nueva propiedad
+Ejemplo de solicitud:
+    Header: Authorization: Bearer jwt_token_aqui
+    POST /api/properties
+
+    ```bash
+    {
+        "address": "Avenida Siempreviva 742",
+        "type": "Departamento",
+        "price": 150000,
+        "status": "disponible",
+        "description": "Departamento moderno",
+        "size": 80,
+        "agentId": 2
+    }
+    ```
+
+Respuesta exitosa:
+
+    ```bash
+    {
+        "message": "Propiedad registrada exitosamente",
+        "property": {
+            "id": 2,
+            "address": "Avenida Siempreviva 742",
+            "type": "Departamento",
+            "price": 150000,
+            "status": "disponible",
+            "description": "Departamento moderno",
+            "size": 80,
+            "agentId": 2
+        }
+    }
+    ```
+
+# PUT /api/properties/ - Actualizar la información de una propiedad
+Ejemplo de solicitud:
+    Header: Authorization: Bearer jwt_token_aqui
+    PUT /api/properties/1
+
+    ```bash
+    {
+        "price": 230000,
+        "status": "reservada"
+    }
+    ```
+
+Respuesta exitosa:
+
+    ```bash
+    {
+        "message": "Propiedad actualizada exitosamente",
+        "property": {
+            "id": 1,
+            "address": "Calle Falsa 123",
+            "type": "Casa",
+            "price": 230000,
+            "status": "reservada",
+            "description": "Hermosa casa en el centro",
+            "size": 120,
+            "agentId": 2
+        }
+    }
+    ```
+
+# DELETE /api/properties/ - Eliminar una propiedad
+Ejemplo de solicitud:
+    Header: Authorization: Bearer jwt_token_aqui
+    DELETE /api/properties/2
+
+Respuesta exitosa:
+
+    ```bash
+    {
+        "message": "Propiedad eliminada exitosamente"
+    }
+    ```
+
+## Gestión de Clientes
+# GET /api/clients - Obtener la lista de todos los clientes
+Ejemplo de solicitud:
+    Header: Authorization: Bearer jwt_token_aqui
+    GET /api/clients
+
+Respuesta exitosa:
+
+    ```bash
+    [
+        {
+            "id": 1,
+            "name": "Carlos García",
+            "documentId": "DNI 12345678",
+            "phone": "123456789",
+            "userId": 1
+        },
+        ...
+    ]
+    ```
+
+# POST /api/clients - Registrar un nuevo cliente
+Ejemplo de solicitud:
+    Header: Authorization: Bearer jwt_token_aqui
+    POST /api/clients
+
+    ```bash
+    {
+        "name": "Carlos García",
+        "documentId": "DNI 12345678",
+        "phone": "123456789",
+        "userId": 1
+    }
+    ```
+
+Respuesta exitosa:
+
+    ```bash
+    {
+        "message": "Cliente registrado exitosamente",
+        "client": {
+            "id": 2,
+            "name": "Carlos García",
+            "documentId": "DNI 12345678",
+            "phone": "123456789",
+            "userId": 1
+        }
+    }
+    ```
+
+## Control de Alquileres
+# GET /api/rentals - Obtener todos los alquileres
+Ejemplo de solicitud:
+    GET /api/rentals
+
+Respuesta exitosa:
+
+    ```bash
+    [
+        {
+            "id": 1,
+            "rentalDate": "2024-12-01",
+            "returnDate": "2025-01-01",
+            "totalAmount": 1500,
+            "propertyId": 1,
+            "clientId": 1
+        },
+        ...
+    ]
+    ```
+
+# POST /api/rentals - Registrar un nuevo alquiler
+Ejemplo de solicitud:
+    Header: Authorization: Bearer jwt_token_aqui
+    POST /api/rentals
+
+    ```bash
+    {
+        "rentalDate": "2024-12-01",
+        "returnDate": "2025-01-01",
+        "totalAmount": 1500,
+        "propertyId": 1,
+        "clientId": 1
+    }
+    ```
+
+Respuesta exitosa:
+
+    ```bash
+    {
+        "message": "Alquiler registrado exitosamente",
+        "rental": {
+            "id": 1,
+            "rentalDate": "2024-12-01",
+            "returnDate": "2025-01-01",
+            "totalAmount": 1500,
+            "propertyId": 1,
+            "clientId": 1
+        }
+    }
+    ```
+
+## Control de Ventas
+# GET /api/sales - Obtener todas las ventas
+Ejemplo de solicitud:
+    GET /api/sales
+
+Respuesta exitosa:
+
+    ```bash
+    [
+        {
+            "id": 1,
+            "propertyId": 1,
+            "clientId": 2,
+            "salePrice": 150000,
+            "saleDate": "2024-12-01"
+        },
+        ...
+    ]
+    ```
+
+# POST /api/sales - Registrar una nueva venta
+Ejemplo de solicitud:
+    Header: Authorization: Bearer jwt_token_aqui
+    POST /api/sales
+
+    ```bash
+    {
+        "propertyId": 1,
+        "clientId": 2,
+        "salePrice": 150000,
+        "saleDate": "2024-12-01"
+    }
+    ```
+
+Respuesta exitosa:
+
+    ```bash
+    {
+        "message": "Venta registrada exitosamente",
+        "sale": {
+            "id": 1,
+            "propertyId": 1,
+            "clientId": 2,
+            "salePrice": 150000,
+            "saleDate": "2024-12-01"
+        }
+    }
+    ```
+
+## Configuración de Variables de Entorno
+
+# Crea un archivo .env en la raíz del proyecto y agrega las siguientes variables:
+
+    ```bash
+    # Configuración de la base de datos
+    DB_HOST=localhost
+    DB_USER=root
+    DB_PASS=root
+    DB_NAME=nombre_base_de_datos
+
+    # Configuración del puerto del servidor
+    PORT=3307
+
+    # Clave secreta para JWT
+    JWT_SECRET=tu_clave_secreta    
+    ```
+
+## Configuración de Repositorios
+
+1. Repositorio del Backend:
+    Ubicado en https://github.com/tuusuario/nombre-del-repo-backend.
+    Contiene toda la API REST, configuración de base de datos y autenticación.
+2. Repositorio del Frontend:
+    Ubicado en https://github.com/tuusuario/nombre-del-repo-frontend.
+    Incluye la interfaz de usuario en React y el consumo de la API.
+3. Integración:
+    En el frontend, configura las peticiones HTTP para apuntar al backend desplegado o local (http://localhost:3307/api).
+
+## Contribuciones
+
+Si deseas contribuir a este proyecto, por favor:
+1. Realiza un fork del repositorio.
+2. Crea una nueva rama (git checkout -b feature/nueva-funcionalidad).
+3. Realiza tus cambios y commitea (git commit -m 'Agregar nueva funcionalidad').
+4. Haz push a la rama (git push origin feature/nueva-funcionalidad).
+5. Abre un Pull Request.

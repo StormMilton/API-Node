@@ -1,71 +1,95 @@
-const db = require('../models');
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
+const { User } = require("../models"); // Importa el modelo User desde el directorio models
 
-const createUser = async (req, res) => {
-  try {
-    // Extraemos los datos del cuerpo de la solicitud (name, email, password, role)
-    const { name, email, password, role } = req.body;
+exports.register = async (req, res) => {
+  const { name, email, password, role } = req.body; // Ajustar los nombres aquí
 
-    // Creamos un nuevo usuario en la base de datos utilizando Sequelize
-    const user = await db.User.create({ name, email, password, role });
-
-    // Devolvemos una respuesta con el usuario recién creado
-    res.status(201).json(user);
-  } catch (error) {
-    console.error(error); // Imprime cualquier error en la consola
-    res.status(500).json({ error: 'Error creando el usuario' }); // Enviamos un mensaje de error si algo falla
-  }
-};
-
-const loginUser = async (req, res) => {
-  const { email, password } = req.body; // Extraemos email y password del request
+  console.log("Cuerpo de la solicitud:", req.body);
 
   try {
-    // Buscamos el usuario por email
-    const user = await db.User.findOne({ where: { email } });
-
-    if (!user) {
-      return res.status(404).json({ error: 'Usuario no encontrado' }); // Si el usuario no existe, devolvemos error
+    const existingUser = await User.findOne({ where: { email: email } }); // Cambiar correo a email
+    if (existingUser) {
+      return res.status(400).json({ message: "El correo ya está registrado." });
     }
 
-    // Comparamos la contraseña ingresada con la contraseña hasheada en la base de datos
-    const isMatch = await bcrypt.compare(password, user.password);
+    const hashedPassword = await bcrypt.hash(password, 10); // Cambiar contraseña a password
 
-    if (!isMatch) {
-      return res.status(400).json({ error: 'Contraseña incorrecta' }); // Si no coincide, devolvemos un error
+    const newUser = await User.create({
+      name, // Cambiar a name
+      email, // Cambiar a email
+      password: hashedPassword, // Cambiar a hashedPassword
+      role, // Cambiar a role
+    });
+
+    res.status(201).json({
+      message: "Usuario registrado exitosamente",
+      user: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+      },
+    });
+  } catch (error) {
+    console.error("Error al registrar el usuario:", error);
+    res.status(500).json({ message: "Error al registrar el usuario", error });
+  }
+};
+
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET || 'tu_secreto_jwt';
+
+// Controlador de inicio de sesión
+exports.login = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
     }
-    res.status(200).json({ message: 'Login exitoso' });
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Contraseña incorrecta" });
+    }
+
+    const token = jwt.sign(
+      { id: user.id, role: user.role },
+      JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.status(200).json({
+      message: "Inicio de sesión exitoso",
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (error) {
-    console.error(error); // Imprime el error en consola si ocurre
-    res.status(500).json({ error: 'Error en el login' }); // Devuelve un mensaje de error si hay un problema en el servidor
+    console.error("Error en el inicio de sesión:", error);
+    res.status(500).json({ message: "Error en el inicio de sesión", error });
   }
 };
 
-const getUsers = async (req, res) => {
+// Controlador para obtener el perfil del usuario autenticado
+exports.getProfile = async (req, res) => {
   try {
-    const users = await db.User.findAll();
-    res.status(200).json(users);
-  } catch (error) {
-    console.error(error); // Imprime el error en la consola
-    res.status(500).json({ error: 'Error obteniendo los usuarios' });
-  }
-};
-
-
-const getUserById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const user = await db.User.findByPk(id);
+    const user = await User.findByPk(req.user.id, {
+      attributes: { exclude: ["password"] },
+    });
 
     if (!user) {
-      return res.status(404).json({ error: 'Usuario no encontrado' });
+      return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
     res.status(200).json(user);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error obteniendo el usuario' });
+    console.error("Error al obtener el perfil:", error);
+    res.status(500).json({ message: "Error al obtener el perfil", error });
   }
 };
-
-module.exports = { createUser, getUsers, getUserById, loginUser };

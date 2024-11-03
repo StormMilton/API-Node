@@ -1,10 +1,15 @@
 const express = require('express');
-const { createUser, getUsers, getUserById, loginUser } = require('../controllers/userController');
 const router = express.Router();
+const authenticateToken = require('../middleware/auth');
+const userController = require('../controllers/userController');
 
-router.post('/users', createUser);
-router.get('/users', getUsers);
-router.get('/users/:id', getUserById);
-router.post('/users/login', loginUser); // Nueva ruta para el login
+// Ruta para registrar un usuario
+router.post('/register', userController.register);
+
+// Ruta de inicio de sesión
+router.post('/login', userController.login);
+
+// Ruta para obtener el perfil del usuario autenticado
+router.get('/profile', authenticateToken, userController.getProfile);
 
 module.exports = router;

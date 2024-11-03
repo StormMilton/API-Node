@@ -1,9 +1,10 @@
 {
   "development": {
     "username": "root",
-    "password": "root1234",
-    "database": "nombre_de_tu_db",
+    "password": "root",
+    "database": "rentals_db",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "port": 3306
   }
 }

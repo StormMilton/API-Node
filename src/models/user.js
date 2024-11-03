@@ -1,48 +1,22 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-const bcrypt = require('bcryptjs'); // Importar bcrypt
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../config/config.json'); 
 
-module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
-    static associate(models) {
-      User.hasMany(models.Recipe, { foreignKey: 'UserId' });
-    }
-  }
+module.exports = (sequelize) => {
+  class User extends Model {}
 
-  User.init({
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
+  User.init(
+    {
+      name: DataTypes.STRING,
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+      role: DataTypes.STRING,
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    role: {
-      type: DataTypes.STRING,
-      defaultValue: 'user',
+    {
+      sequelize, // Pasamos la instancia de sequelize como parámetro aquí
+      modelName: 'User',
+      tableName: 'users', // Asegúrate de definir el nombre de la tabla si es necesario
     }
-  }, {
-    sequelize,
-    modelName: 'User',
-    timestamps: true,
-    hooks: {
-      // Hook antes de crear un nuevo usuario
-      beforeCreate: async (user, options) => {
-        // Generamos un "salt" para el hash
-        const salt = await bcrypt.genSalt(10);
-        // Hasheamos la contraseña del usuario usando el salt generado
-        user.password = await bcrypt.hash(user.password, salt);
-      }
-    }
-  });
+  );
 
   return User;
 };
