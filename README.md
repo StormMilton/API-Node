@@ -19,8 +19,8 @@ Este proyecto es una aplicación de gestión de propiedades que permite realizar
 1. Clona este repositorio:
 
    ```bash
-   git clone https://github.com/tuusuario/nombre-del-repo-backend.git
-   cd nombre-del-repo-backend
+   git clone https://github.com/StormMilton/API-Node.git
+   cd API-Node
 
 2. Instala las dependencias:
 
@@ -187,7 +187,8 @@ Ejemplo de solicitud:
     "description": "Departamento moderno",
     "size": 80,
     "agentId": 2
-}```
+}
+```
 
 Respuesta exitosa:
 
@@ -267,7 +268,6 @@ Respuesta exitosa:
         "phone": "123456789",
         "userId": 1
     },
-    ...
 ]
 ```
 
@@ -317,7 +317,6 @@ Respuesta exitosa:
         "propertyId": 1,
         "clientId": 1
     },
-    ...
 ]
 ```
 
@@ -368,7 +367,6 @@ Respuesta exitosa:
         "salePrice": 150000,
         "saleDate": "2024-12-01"
     },
-    ...
 ]
 ```
 
