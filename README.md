@@ -28,6 +28,8 @@ Este proyecto es una aplicación de gestión de propiedades que permite realizar
     npm install
 
 3. Crea la base de datos necesaria y configura las variables de entorno en un archivo .env siguiendo el ejemplo de Configuración de Variables de Entorno.
+    ```bash
+    node createDatabase.js
 
 4. Ejecuta las migraciones para crear las tablas necesarias en la base de datos:
 
