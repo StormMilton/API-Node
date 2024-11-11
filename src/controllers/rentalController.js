@@ -18,37 +18,39 @@ exports.getAllRentals = async (req, res) => {
 
 // Crear un nuevo alquiler
 exports.createRental = async (req, res) => {
-    const { rentalDate, returnDate, totalAmount, propertyId, clientId } = req.body;
-    try {
-      // Verificar si la propiedad está disponible
-      const property = await Property.findByPk(propertyId);
-      if (!property) {
-        return res.status(404).json({ message: "Propiedad no encontrada" });
-      }
-      if (property.status !== 'disponible') {
-        return res.status(400).json({ message: "La propiedad no está disponible para alquilar" });
-      }
-  
-      // Crear el alquiler
-      const rental = await Rental.create({
-        rentalDate,
-        returnDate,
-        totalAmount,
-        id_propiedad: propertyId,
-        id_cliente: clientId,
-      });
-  
-      // Cambiar el estado de la propiedad a "no disponible"
-      property.status = 'no disponible';
-      await property.save();
-  
-      res.status(201).json(rental);
-    } catch (error) {
-      console.error("Error al registrar alquiler:", error);
-      res.status(500).json({ message: "Error al registrar alquiler" });
+  const { rentalDate, returnDate, totalAmount, propertyId, clientId } = req.body;
+  console.log("Datos recibidos para crear alquiler:", { rentalDate, returnDate, totalAmount, propertyId, clientId });
+  console.log("Usuario autenticado en la solicitud:", req.user);
+
+  try {
+    // Verificar si la propiedad está disponible
+    const property = await Property.findByPk(propertyId);
+    if (!property) {
+      return res.status(404).json({ message: "Propiedad no encontrada" });
     }
-  };
-  
+    if (property.status !== 'Disponible') {
+      return res.status(400).json({ message: "La propiedad no está disponible para alquilar" });
+    }
+
+    // Crear el alquiler
+    const rental = await Rental.create({
+      rentalDate,
+      returnDate,
+      totalAmount,
+      id_propiedad: propertyId,
+      id_cliente: clientId,
+    });
+
+    // Cambiar el estado de la propiedad a "no disponible"
+    property.status = 'no disponible';
+    await property.save();
+
+    res.status(201).json(rental);
+  } catch (error) {
+    console.error("Error al registrar alquiler:", error);
+    res.status(500).json({ message: "Error al registrar alquiler" });
+  }
+};
 
 // Actualizar un alquiler existente
 exports.updateRental = async (req, res) => {

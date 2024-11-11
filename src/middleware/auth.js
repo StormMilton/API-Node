@@ -9,6 +9,7 @@ const authenticateToken = (req, res, next) => {
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) return res.status(403).json({ message: 'Token inválido' });
+    console.log('Usuario autenticado:', user); // Verificar el usuario autenticado
     req.user = user;
     next();
   });

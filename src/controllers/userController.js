@@ -93,3 +93,60 @@ exports.getProfile = async (req, res) => {
     res.status(500).json({ message: "Error al obtener el perfil", error });
   }
 };
+
+// Metodo para obtener todos los usuarios
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: { exclude: ["password"] },
+    });
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Error al obtener usuarios:", error);
+    res.status(500).json({ message: "Error al obtener usuarios", error });
+  }
+};
+
+// Función para actualizar un usuario existente
+exports.updateUser = async (req, res) => {
+  const { id } = req.params;
+  const { name, email, role } = req.body;
+
+  try {
+      // Buscar el usuario por su ID
+      const user = await User.findByPk(id);
+      if (!user) {
+          return res.status(404).json({ message: 'Usuario no encontrado' });
+      }
+
+      // Actualizar los campos del usuario
+      user.name = name || user.name;
+      user.email = email || user.email;
+      user.role = role || user.role;
+
+      // Guardar los cambios en la base de datos
+      await user.save();
+
+      res.status(200).json({ message: 'Usuario actualizado con éxito', user });
+  } catch (error) {
+      console.error('Error al actualizar el usuario:', error);
+      res.status(500).json({ message: 'Error al actualizar el usuario', error });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  const { id } = req.params; // Obtén el ID del usuario desde los parámetros de la URL
+
+  try {
+      const user = await User.findByPk(id); // Encuentra el usuario por su ID
+      if (!user) {
+          return res.status(404).json({ message: "Usuario no encontrado" });
+      }
+
+      await user.destroy(); // Elimina el usuario
+      res.status(200).json({ message: "Usuario eliminado exitosamente" });
+  } catch (error) {
+      console.error("Error al eliminar usuario:", error);
+      res.status(500).json({ message: "Error al eliminar usuario" });
+  }
+};

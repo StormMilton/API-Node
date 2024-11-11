@@ -13,7 +13,8 @@ exports.getAvailableProperties = async (req, res) => {
 
 // Registrar una nueva propiedad
 exports.createProperty = async (req, res) => {
-  const { address, type, price, description, size, agentId } = req.body;
+  // console.log("Cuerpo recibido:", req.body)
+  const { address, type, price, daily_price, status, description, size, agentId } = req.body;
 
   console.log("Cuerpo solicitud: ", req.body)
 
@@ -22,12 +23,18 @@ exports.createProperty = async (req, res) => {
   }
 
   try {
+    // Extrae la URL de la imagen si está presente
+    const imagePath = req.file ? req.file.path : null;
+
     const newProperty = await Property.create({ 
         address,
         type,
         price,
+        daily_price,
+        status,
         description, 
         size,
+        image: imagePath,
         agentId 
     });
     res.status(201).json({ 
@@ -36,8 +43,11 @@ exports.createProperty = async (req, res) => {
             address: newProperty.address,
             type: newProperty.type,
             price: newProperty.price,
+            daily_price: newProperty.daily_price,
+            status: newProperty.status,
             description: newProperty.description,
             size: newProperty.size,
+            image: newProperty.image,
             agentId: newProperty.agentId,
         },
     });
@@ -85,5 +95,20 @@ exports.deleteProperty = async (req, res) => {
   } catch (error) {
     console.error("Error eliminando propiedad:", error);
     res.status(500).json({ message: "Error eliminando propiedad" });
+  }
+};
+
+// Obtener una propiedad por ID
+exports.getPropertyById = async (req, res) => {
+  const { id } = req.params;
+  try {
+      const property = await Property.findByPk(id);
+      if (!property) {
+          return res.status(404).json({ error: 'Propiedad no encontrada' });
+      }
+      res.json(property);
+  } catch (error) {
+      console.error("Error al obtener propiedad:", error);
+      res.status(500).json({ error: 'Error al obtener la propiedad' });
   }
 };
