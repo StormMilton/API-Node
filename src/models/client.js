@@ -5,10 +5,10 @@ module.exports = (sequelize) => {
 
   Client.init(
     {
-      name: { type: DataTypes.STRING, allowNull: false },
-      documentId: { type: DataTypes.STRING, allowNull: false, unique: true },
-      phone: { type: DataTypes.STRING, allowNull: true },
-      userId: { type: DataTypes.INTEGER, allowNull: false } // Relación con usuario
+      name: { type: DataTypes.STRING, allowNull: false, field: 'nombre' },
+      documentId: { type: DataTypes.STRING, allowNull: false, unique: true, field: 'documento_identidad' },
+      phone: { type: DataTypes.STRING, allowNull: true, field: 'telefono' },
+      userId: { type: DataTypes.INTEGER, allowNull: false, field: 'id_usuario' } // Relación con usuario
     },
     {
       sequelize,
